@@ -1,0 +1,14 @@
+{
+  "name": "ai-content-generator",
+  "version": "1.0.0",
+  "description": "AI Content Generator using Node.js and Gemini API",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "@google/generative-ai": "^1.0.0"
+  }
+}

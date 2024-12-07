@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            padding: 10px 20px; /* Padding */
+            text-align: center; /* Centered text */
+        }
+
+        nav {
+            display: flex; /* Flexbox for layout */
+            justify-content: center; /* Center items */
+            background-color: #333; /* Dark background */
+        }
+
+        nav ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margin */
+            display: flex; /* Flexbox for horizontal layout */
+        }
+
+        nav ul li {
+            margin: 0 15px; /* Space between items */
+        }
+
+        nav ul li a {
+            color: white; /* White text */
+            text-decoration: none; /* Remove underline */
+            padding: 14px 20px; /* Padding for clickable area */
+            display: block; /* Block display for full area */
+        }
+
+        nav ul li a:hover {
+            background-color: #575757; /* Darker background on hover */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column; /* Stack items on small screens */
+            }
+
+            nav ul li {
+                margin: 5px 0; /* Space between stacked items */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Credit Worthiness</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="news.html">Real-Time News Integration</a></li>
+            <li><a href="cs.html">Credit Score Generator</a></li>
+            <li><a href="game.html">Game Page</a></li>
+            <li><a href="forum.html">Discussion Forum</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
