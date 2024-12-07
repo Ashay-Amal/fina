@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87cefa, #f3f4f6);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .platform {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(circle, #8B4513, #5a3215);
+        }
+
+        .character {
+            position: absolute;
+            bottom: 20%;
+            width: 200px;
+            height: 300px;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .character.computer {
+            left: 10%;
+            background-image: url('./computer_char-removebg-preview.png');
+        }
+
+        .character.user {
+            right: 10%;
+            background-image: url('./farmer_char.png');
+        }
+
+        .bubble {
+            position: absolute;
+            top: -150px; /* Adjusted to be 50px higher */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+            display: none;
+        }
+
+        .options {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .options button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .options button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="platform"></div>
+        <div class="character computer">
+            <div class="bubble" id="computerBubble"></div>
+        </div>
+        <div class="character user">
+            <div class="bubble" id="userBubble"></div>
+        </div>
+        <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <script>
+        const conversations = [
+            {
+                message: "Let’s make this situation-type game where you match a scenario with the right scheme! Ready? Let’s go! 🌟",
+                answers: ['Start!', 'Exit']
+            },
+            {
+                message: "Situation 1: A farmer wants to build a warehouse and a cold storage unit to preserve their crops. They need a long-term loan with interest subvention. Which scheme should they choose?",
+                answers: ['Agriculture Infrastructure Fund (AIF)', 'PM-KISAN', 'Solar Irrigation Scheme'],
+                correctAnswer: 'Agriculture Infrastructure Fund (AIF)'
+            },
+            {
+                message: "Situation 2: A dairy farm owner wants to set up a milk processing plant and invest in better equipment. They’re looking for low-interest loans with subsidies for repayment. Which scheme fits here?",
+                answers: ['Dairy Entrepreneurship Development Scheme (DEDS)', 'MUDRA Loan', 'PM-KUSUM'],
+                correctAnswer: 'Dairy Entrepreneurship Development Scheme (DEDS)'
+            },
+            {
+                message: "Situation 3: A small business owner making traditional pickles wants to expand their micro food processing unit. They’re looking for subsidies and business support for formalizing their operations. Which scheme should they explore?",
+                answers: ['PM FME', 'Stand-Up India', 'Operation Greens'],
+                correctAnswer: 'PM FME'
+            },
+            {
+                message: "Situation 4: A farmer is tired of high electricity bills and wants to switch to solar-powered irrigation. They need subsidies for solar panels and standalone solar pumps. What’s the right scheme for them?",
+                answers: ['PM-KUSUM', 'PM-KISAN', 'MUDRA Loan'],
+                correctAnswer: 'PM-KUSUM'
+            },
+            {
+                message: "Situation 5: A youth from a small town dreams of opening a small manufacturing unit for handmade crafts. They don’t have collateral but need financial support and government subsidy. Which scheme can help?",
+                answers: ['Stand-Up India', 'MUDRA Loan', 'PMEGP'],
+                correctAnswer: 'Stand-Up India'
+            }
+        ];
+
+        let conversationIndex = 0;
+        let score = 0;
+
+        const computerBubble = document.getElementById('computerBubble');
+        const optionsContainer = document.getElementById('optionsContainer');
+
+        function nextConversation() {
+            if (conversationIndex < conversations.length) {
+                const convo = conversations[conversationIndex];
+                conversationIndex++;
+                computerBubble.innerHTML = convo.message.replace(/\n/g, '<br>');
+                computerBubble.style.display = 'block';
+
+                if (convo.answers) {
+                    displayOptions(convo.answers, convo.correctAnswer);
+                } else {
+                    optionsContainer.innerHTML = '';
+                }
+            } else {
+                // Correct string interpolation for final message
+                computerBubble.innerHTML = `🎉 Congratulations! Your final score is ${score}/${conversations.length - 1}. 🎉`;
+                optionsContainer.innerHTML = '';
+            }
+        }
+
+        function displayOptions(options, correctAnswer) {
+            optionsContainer.innerHTML = '';
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => {
+                    if (option === correctAnswer) score++;
+                    nextConversation();
+                };
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        nextConversation();
+    </script>
+</body>
+</html>

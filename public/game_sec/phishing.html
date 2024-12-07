@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warning Message</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ff4d4d; /* Red background */
+      font-family: Arial, sans-serif;
+    }
+
+    .warning-container {
+      text-align: center;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      animation: pulse 1.5s infinite;
+    }
+
+    .warning-sign {
+      color: red;
+      font-size: 3rem;
+    }
+
+    .warning-text {
+      font-size: 1.2rem;
+      color: #333;
+      margin-top: 1rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="warning-container">
+    <!-- Warning Sign -->
+    <div class="warning-sign">⚠</div>
+
+    <!-- Warning Message -->
+    <div class="warning-text">
+      Amount of <strong>Rs 50,000</strong> has been deducted from your account.
+    </div>
+  </div>
+</body>
+</html>

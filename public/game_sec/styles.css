@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #87cefa, #f3f4f6);
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Tree Structure */
+.tree {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 300px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/8/89/Tree_graphic.svg') no-repeat center center;
+    background-size: contain;
+}
+
+/* Platform */
+.platform {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 100px;
+    background: radial-gradient(circle, #8B4513, #5a3215);
+    border-radius: 50%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Seats */
+.seat {
+    position: absolute;
+    bottom: 20%;
+    width: 150px;
+    height: 30px;
+    background: #654321;
+    border-radius: 10px;
+}
+
+.seat.left {
+    left: 20%;
+}
+
+.seat.right {
+    right: 20%;
+}
+
+/* Characters */
+.character {
+    position: absolute;
+    bottom: 25%;
+    height: 25vh; /* Character height is 25% of the screen height */
+    width: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.character.computer {
+    left: 15%;
+    background-image: url('https://via.placeholder.com/200x300?text=AI'); /* Placeholder for computer character */
+}
+
+.character.user {
+    right: 15%;
+    background-image: url('./farmer_char.png'); /* Path to farmer image */
+}
+
+/* Speech Bubbles */
+.bubble {
+    position: absolute;
+    top: -15%;
+    width: 200px;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 10px;
+    border-color: white transparent transparent transparent;
+}
+
+.character.computer .bubble {
+    left: -10%;
+}
+
+.character.user .bubble {
+    right: -10%;
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Scam Awareness Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87cefa, #f3f4f6);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .platform {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(circle, #8B4513, #5a3215);
+        }
+        .character {
+            position: absolute;
+            bottom: 20%;
+            width: 200px;
+            height: 300px;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .character.computer {
+            left: 10%;
+            background-image: url('./scammer.png');
+        }
+        .character.user {
+            right: 10%;
+            background-image: url('./farmer_char.png');
+        }
+        .bubble {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+            display: none;
+        }
+        .options {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .options button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .options button:hover {
+            background: #0056b3;
+        }
+        .consequence {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            font-size: 16px;
+            color: #d32f2f;
+            text-align: center;
+            width: 300px;
+        }
+        .score {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            display: none;
+        }
+        #playAudioButton {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: none;
+        }
+        #playAudioButton:hover {
+            background: #0056b3;
+        }
+        /* Popup styles */
+        #emailPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #emailPopup h2 {
+            margin-top: 0;
+        }
+        #emailPopup a {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        #closePopup {
+            color: red;
+            cursor: pointer;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="platform"></div>
+        <div class="character computer">
+            <div class="bubble" id="computerBubble"></div>
+        </div>
+        <div class="character user">
+            <div class="bubble" id="userBubble"></div>
+        </div>
+        <div class="options" id="optionsContainer"></div>
+        <div class="consequence" id="consequenceBox"></div>
+        <div class="score" id="scoreBox"></div>
+    </div>
+
+    <!-- Audio element -->
+    <audio id="quizAudio">
+        <source src="./scam_call_bank.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <button id="playAudioButton">RECIEVE</button>
+
+    <!-- Overlay and Popup for Email -->
+    <div id="overlay"></div>
+    <div id="emailPopup">
+        <span id="closePopup">&times;</span>
+        <h2>Email Received!</h2>
+        <p>Dear User,</p>
+        <p>We noticed suspicious activity on your account. Click the link below to secure your account.</p>
+        <a href="phishing.html" target="_blank">Click here to secure your account</a>
+    </div>
+
+    <script>
+        const quizAudio = document.getElementById('quizAudio');
+        const playAudioButton = document.getElementById('playAudioButton');
+        const computerBubble = document.getElementById('computerBubble');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const consequenceBox = document.getElementById('consequenceBox');
+        const scoreBox = document.getElementById('scoreBox');
+        const overlay = document.getElementById("overlay");
+        const emailPopup = document.getElementById("emailPopup");
+        const closePopup = document.getElementById("closePopup");
+
+        let conversationIndex = 0;
+        let score = 0;
+
+        const conversations = [
+            {
+                message: "Welcome! This game will test your scam awareness. Ready?",
+                answers: ['Start!', 'Exit'],
+            },
+            {
+                message: "heyy you are getting a call from unknown number.....tap on recieve to pick",
+                answers: ['Share details', 'Visit the bank', 'Ignore'],
+                correctAnswer: 'Visit the bank',
+            },
+            {
+                message: "hey user you recieved an email .....click on open email to view",
+                answers: ['Open Email'],
+            },
+            {
+                message: "A pop-up on a website claims your device is infected and asks you to download antivirus software. What will you do?",
+                answers: ['Download the software immediately', 'Close the pop-up', 'Restart your device and run your antivirus'],
+                correctAnswer: 'Restart your device and run your antivirus',
+            },
+            {
+                message: "A person pretending to be a government official calls and asks for your Aadhar number and OTP. What will you do?",
+                answers: ['Provide the details', 'Refuse and report the call', 'Ask for their ID proof'],
+                correctAnswer: 'Refuse and report the call',
+            }
+        ];
+
+        function startGame() {
+            scoreBox.style.display = 'none';
+            conversationIndex = 0;
+            score = 0;
+            nextConversation();
+        }
+
+        function nextConversation() {
+            if (conversationIndex < conversations.length) {
+                const convo = conversations[conversationIndex];
+                conversationIndex++;
+                displayConversation(convo);
+
+                if (conversationIndex === 2) {
+                    playAudioButton.style.display = 'block';
+                } else {
+                    playAudioButton.style.display = 'none';
+                }
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function displayConversation(convo) {
+            computerBubble.textContent = convo.message;
+            computerBubble.style.display = 'block';
+
+            optionsContainer.innerHTML = '';
+            convo.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.textContent = answer;
+                if (answer === "Open Email") {
+                    button.onclick = () => showPopup();
+                } else {
+                    button.onclick = () => handleAnswer(answer, convo.correctAnswer);
+                }
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function handleAnswer(selected, correctAnswer) {
+            if (correctAnswer === undefined) {
+                if (selected === 'Start!') {
+                    nextConversation();
+                } else if (selected === 'Exit') {
+                    alert("Thank you for visiting! Goodbye.");
+                }
+            } else if (selected === correctAnswer) {
+                score++;
+                showConsequence("Correct! Good choice. 😊");
+            } else {
+                showConsequence("Incorrect! Be cautious. 😟");
+            }
+        }
+
+        function showConsequence(message) {
+            consequenceBox.textContent = message;
+            consequenceBox.style.display = 'block';
+            setTimeout(() => {
+                consequenceBox.style.display = 'none';
+                nextConversation();
+            }, 2000);
+        }
+
+        function showFinalScore() {
+            scoreBox.textContent = `Your final score is: ${score}/${conversations.length - 1}`;
+            scoreBox.style.display = 'block';
+            computerBubble.style.display = 'none';
+            optionsContainer.innerHTML = '<button onclick="startGame()">Play Again</button>';
+        }
+
+        playAudioButton.addEventListener('click', async () => {
+            try {
+                await quizAudio.play();
+            } catch (error) {
+                console.error("Audio playback failed:", error);
+                alert("Error playing audio: " + error.message);
+            }
+        });
+
+        function showPopup() {
+            overlay.style.display = "block";
+            emailPopup.style.display = "block";
+        }
+
+        closePopup.addEventListener("click", () => {
+            overlay.style.display = "none";
+            emailPopup.style.display = "none";
+            nextConversation();
+        });
+
+        overlay.addEventListener("click", () => {
+            overlay.style.display = "none";
+            emailPopup.style.display = "none";
+        });
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>
