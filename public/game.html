@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Dhan Yatra</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        /* Styling the welcome message box */
+        .message {
+            font-size: 40px;
+            color: #4CAF50;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        /* Container for the rectangular boxes */
+        .box-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two boxes per row */
+            gap: 20px;
+            width: 100%;
+            max-width: 800px; /* Adjusted max-width for a nice fit */
+        }
+
+        /* Styling the individual rectangular boxes */
+        .box {
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect for the boxes */
+        .box:hover {
+            background-color: #45a049;
+        }
+
+        /* For small screens, adjust the grid to 1 box per row */
+        @media screen and (max-width: 600px) {
+            .box-container {
+                grid-template-columns: 1fr; /* 1 box per row on small screens */
+            }
+
+            .box {
+                width: 90%; /* Adjust box width for small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Welcome message -->
+    <div class="message">
+        Hello User, Welcome to DhanYatra &#9995;
+    </div>
+
+    <!-- Box container -->
+    <div class="box-container">
+        <a href="vin_project/index01.html" class="box" target="_blank">Schemes</a>
+        <a href="#" class="box" target="_blank">Managing Expenses</a>
+        <a href="#" class="box" target="_blank">Investment</a>
+        <a href="vin_project/index02.html" class="box" target="_blank">Financial Safety</a>
+    </div>
+
+</body>
+</html>

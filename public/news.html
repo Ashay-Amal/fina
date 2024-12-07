@@ -1,0 +1,208 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live News Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .article {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin: 0 0 10px;
+        }
+
+        .article p {
+            margin: 0;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Top Headlines in India</h1>
+    </header>
+    <div id="news-container" class="news-container">
+        <div class="loading">Loading news articles...</div>
+    </div>
+    <script>
+        const mediastackApiKey = '5b7eeaa67a08a2672fc65aad65e1de0c'; // Your Mediastack API key
+        const gnewsApiKey = '99684db32e2368826daac4b6120ed628'; // Your GNews API key
+        const keywords = ['rural', 'finance']; // Separate keywords
+
+        async function fetchMediastackNews(keyword) {
+            const mediastackUrl = `http://api.mediastack.com/v1/news?access_key=${mediastackApiKey}&countries=in&keywords=${encodeURIComponent(keyword)}&sort=published_desc`;
+            try {
+                const response = await fetch(mediastackUrl);
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error(`Error fetching Mediastack news for ${keyword}:`, error);
+                return [];
+            }
+        }
+
+        async function fetchGNews(keyword) {
+            const gnewsUrl = `https://gnews.io/api/v4/search?q=${encodeURIComponent(keyword)}&lang=en&country=in&max=10&apikey=${gnewsApiKey}`;
+            try {
+                const response = await fetch(gnewsUrl);
+                const data = await response.json();
+                return data.articles;
+            } catch (error) {
+                console.error(`Error fetching GNews for ${keyword}:`, error);
+                return [];
+            }
+        }
+
+        async function fetchNews() {
+            const newsContainer = document.getElementById('news-container');
+            newsContainer.innerHTML = ''; // Clear loading message
+
+            const allArticles = [];
+
+            for (const keyword of keywords) {
+                const [mediastackArticles, gnewsArticles] = await Promise.all([
+                    fetchMediastackNews(keyword),
+                    fetchGNews(keyword)
+                ]);
+
+                allArticles.push(...mediastackArticles, ...gnewsArticles);
+            }
+
+            if (allArticles.length > 0) {
+                allArticles.forEach(article => {
+                    const articleDiv = document.createElement('div');
+                    articleDiv.classList.add('article');
+                    articleDiv.innerHTML = `
+                        <h2><a href="${article.url || article.link}" target="_blank">${article.title}</a></h2>
+                        <p>${article.description || 'No description available.'}</p>`;
+                    newsContainer.appendChild(articleDiv);
+                });
+            } else {
+                newsContainer.innerHTML = '<p>No articles found.</p>';
+            }
+        }
+
+        fetchNews();
+    </script>
+</body>
+
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live News Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .article {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin: 0 0 10px;
+        }
+
+        .article p {
+            margin: 0;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Top Headlines in India</h1>
+    </header>
+    <div id="news-container" class="news-container">
+        <div class="loading">Loading news articles...</div>
+    </div>
+    <script>
+        const apiKey = 'f13083ed0bb3b9de42ebffd23b6087ca'; // Your Mediastack API key
+        const keywords = 'rural'; // Replace with your desired keywords
+        const url = `http://api.mediastack.com/v1/news?access_key=${apiKey}&countries=in&keywords=${encodeURIComponent(keywords)}&sort=published_desc`;
+
+        async function fetchNews() {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const newsContainer = document.getElementById('news-container');
+                newsContainer.innerHTML = ''; // Clear loading message
+
+                if (data.data.length > 0) {
+                    data.data.forEach(article => {
+                        const articleDiv = document.createElement('div');
+                        articleDiv.classList.add('article');
+                        articleDiv.innerHTML = `
+                            <h2><a href="${article.url}" target="_blank">${article.title}</a></h2>
+                            <p>${article.description || 'No description available.'}</p>`;
+                        newsContainer.appendChild(articleDiv);
+                    });
+                } else {
+                    newsContainer.innerHTML = '<p>No articles found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                document.getElementById('news-container').innerHTML = '<p>Error fetching news articles.</p>';
+            }
+        }
+        fetchNews();
+    </script>
+</body>
+
+</html>
